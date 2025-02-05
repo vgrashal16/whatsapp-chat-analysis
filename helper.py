@@ -33,9 +33,20 @@ def create_wordcloud(selected_user, df):
         df = df[df['users'] == selected_user]
     df = df[(df['user_messages'] != '<Media omitted>\n') & (~df['user_messages'].str.contains('https', na=False))]
 
-    wc = WordCloud(width=500, height=500, min_font_size=10, background_color='white')
-    df_wc = wc.generate(df['user_messages'].str.cat(sep = ""))
+    words_df = df[(df['users'] != 'chat/group notification') & (df['user_messages'] != '<Media omitted>\n')]
+    file = open("hinglish_stopwords.txt", "r", encoding="utf-8")
+    stop_words = file.read()
 
+    def remove_stopwords(message):
+        temp = []
+        for word in message.lower().split():
+            if word not in stop_words:
+                temp.append(word)
+        return " ".join(temp)
+
+    words_df['user_messages'] = words_df['user_messages'].apply(remove_stopwords)
+    wc = WordCloud(width=500, height=500, min_font_size=10, background_color='white')
+    df_wc = wc.generate(words_df['user_messages'].str.cat(sep = ""))
     return df_wc
 
 def most_used_words(selected_user, df):
