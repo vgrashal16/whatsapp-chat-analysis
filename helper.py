@@ -39,6 +39,8 @@ def create_wordcloud(selected_user, df):
     return df_wc
 
 def most_used_words(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['users'] == selected_user]
     words_df = df[(df['users'] != 'chat/group notification') & (df['user_messages'] != '<Media omitted>\n')]
     file = open("hinglish_stopwords.txt", "r", encoding="utf-8")
     stop_words = file.read()
