@@ -63,3 +63,11 @@ if upload_file is not None:
         fig, ax = plt.subplots()
         ax.barh(df_words['words'], df_words['frequency'])
         st.pyplot(fig)
+
+        #most used emojis
+        st.title("Most Used Emojis")
+        df_emoji = helper.most_used_emoji(selected_user, df)
+        plt.rcParams['font.family'] = 'Segoe UI Emoji'
+        fig, ax = plt.subplots()
+        ax.pie(df_emoji[1].head(), labels = df_emoji[0].head(), autopct="%0.2f")
+        st.pyplot(fig)
