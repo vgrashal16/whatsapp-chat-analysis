@@ -10,8 +10,6 @@ if upload_file is not None:
     bytes_data = upload_file.getvalue()
     data = bytes_data.decode("utf-8")
     df = preprocessor.preprocess(data)
-
-    st.dataframe(df)
     
     #fetching unique users
     user_list = df['users'].unique().tolist()
@@ -21,7 +19,7 @@ if upload_file is not None:
     selected_user = st.sidebar.selectbox("Select User: ", user_list)
 
     if st.sidebar.button("Show Analysis"):
-        st.title("Messages Analysis")
+        st.title("Messages Statistics")
         num_messages,words,media_msg,links = helper.fetch_stats(selected_user, df)
         col1, col2, col3, col4 = st.columns(4)
         with col1:
@@ -70,4 +68,14 @@ if upload_file is not None:
         plt.rcParams['font.family'] = 'Segoe UI Emoji'
         fig, ax = plt.subplots()
         ax.pie(df_emoji[1].head(), labels = df_emoji[0].head(), autopct="%0.2f")
+        st.pyplot(fig)
+
+        #message timeline
+        st.title("Monthly Timeline")
+        df_timeline = helper.monthly_timeline(selected_user, df)
+        fig, ax = plt.subplots()
+        plt.plot(df_timeline['timeline'], df_timeline['user_messages'], color="green")
+        num_labels = len(df_timeline['timeline'].unique())  # Unique timeline labels
+        fontsize = max(5, min(12, 100 / num_labels))  # Adjust between 5 and 12 
+        plt.xticks(rotation = "vertical", fontsize=fontsize)
         st.pyplot(fig)

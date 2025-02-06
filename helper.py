@@ -66,8 +66,22 @@ def most_used_words(selected_user, df):
     return df_words
 
 def most_used_emoji(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['users'] == selected_user]
     emojis = []
     for message in df['user_messages']:
         emojis.extend([c for c in message if emoji.is_emoji(c)])
 
     return pd.DataFrame(Counter(emojis).most_common(len(Counter(emojis))))
+
+def monthly_timeline(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['users'] == selected_user]
+    timeline_df = df.groupby(['year', 'month_num',  'month']).count()['user_messages'].reset_index()
+
+    timeline = []
+    for i in range(timeline_df.shape[0]):
+        timeline.append(timeline_df['month'][i] + " - " + str(timeline_df['year'][i]))
+    timeline_df['timeline'] = timeline
+
+    return timeline_df
