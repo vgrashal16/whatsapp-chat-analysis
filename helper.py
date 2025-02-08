@@ -97,3 +97,22 @@ def month_activity_map(selected_user, df):
         df = df[df['users'] == selected_user]
     
     return df['month'].value_counts()
+
+
+def activity_heatmap(selected_user, df):
+    df_copy = df.copy() 
+
+    if selected_user != 'Overall':
+        df_copy = df_copy[df_copy['users'] == selected_user]
+
+    df_copy['day_name'] = pd.Categorical(df_copy['day_name'], 
+                                         categories=['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'], 
+                                         ordered=True)
+
+    df_copy['period'] = pd.Categorical(df_copy['period'], 
+                                       categories=[f"{i}-{i+1}" if i != 23 else "23-00" for i in range(24)], 
+                                       ordered=True)
+
+    return df_copy.pivot_table(index='day_name', columns='period', values='user_messages', aggfunc='count').fillna(0)
+
+    
