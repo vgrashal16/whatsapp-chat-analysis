@@ -17,7 +17,7 @@ def preprocess(data):
             users.append(entry[1])
             user_msgs.append(entry[2])
         else:
-            users.append("chat/group notification")
+            users.append("group notification")
             user_msgs.append(entry[0])
 
     df['users'] = users
@@ -28,6 +28,7 @@ def preprocess(data):
     df['month'] = df['dates'].dt.month_name()
     df['month_num'] = df['dates'].dt.month
     df['day'] = df['dates'].dt.day
+    df['day_name'] = df['dates'].dt.day_name()
     df['hour'] = df['dates'].dt.hour
     df['minute'] = df['dates'].dt.minute
 

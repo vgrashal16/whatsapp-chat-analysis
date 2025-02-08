@@ -34,7 +34,7 @@ def create_wordcloud(selected_user, df):
         df = df[df['users'] == selected_user]
     df = df[(df['user_messages'] != '<Media omitted>\n') & (~df['user_messages'].str.contains('https', na=False))]
 
-    words_df = df[(df['users'] != 'chat/group notification') & (df['user_messages'] != '<Media omitted>\n')]
+    words_df = df[(df['users'] != 'group notification') & (df['user_messages'] != '<Media omitted>\n')]
     file = open("hinglish_stopwords.txt", "r", encoding="utf-8")
     stop_words = file.read()
 
@@ -53,7 +53,7 @@ def create_wordcloud(selected_user, df):
 def most_used_words(selected_user, df):
     if selected_user != 'Overall':
         df = df[df['users'] == selected_user]
-    words_df = df[(df['users'] != 'chat/group notification') & (df['user_messages'] != '<Media omitted>\n')]
+    words_df = df[(df['users'] != 'group notification') & (df['user_messages'] != '<Media omitted>\n')]
     file = open("hinglish_stopwords.txt", "r", encoding="utf-8")
     stop_words = file.read()
     words = []
@@ -85,3 +85,15 @@ def monthly_timeline(selected_user, df):
     timeline_df['timeline'] = timeline
 
     return timeline_df
+
+def day_activity_map(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['users'] == selected_user]
+    
+    return df['day_name'].value_counts()
+
+def month_activity_map(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['users'] == selected_user]
+    
+    return df['month'].value_counts()
