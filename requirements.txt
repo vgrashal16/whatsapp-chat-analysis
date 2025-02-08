@@ -3,5 +3,5 @@ wordcloud
 pandas
 emoji
 streamlit 
-matplotlib.pyplot 
+matplotlib
 seaborn 
