@@ -1,7 +1,6 @@
 urlextract
 wordcloud 
 pandas
-collections 
 emoji
 re
 streamlit 
